@@ -1,0 +1,7 @@
+apiVersion: singhp11.io/v1
+kind: Ibmq
+metadata:
+  name: example-ibmq
+spec:
+  # Add fields here
+  size: 3
