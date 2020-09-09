@@ -1,0 +1,5 @@
+packageName: qiskit-playground-operator
+channels:
+- name: stable
+  currentCSV: qiskit-playground-operator.v1.0.0
+defaultChannel: stable

@@ -1,0 +1,8 @@
+apiVersion: operators.coreos.com/v1
+kind: CatalogSourceConfig
+metadata:
+  name: ibm-quantum-operator
+  namespace: openshift-marketplace
+spec:
+  targetNamespace: openshift-operators
+  packages: ibm-quantum-operator
