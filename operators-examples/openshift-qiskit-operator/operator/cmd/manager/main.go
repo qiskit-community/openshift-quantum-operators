@@ -13,9 +13,9 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/rest"
 
-	"github.com/husky-parul/openshift-qiskit-operator/pkg/apis"
-	"github.com/husky-parul/openshift-qiskit-operator/pkg/controller"
-	"github.com/husky-parul/openshift-qiskit-operator/version"
+	"github.com/example-inc/new--/openshift-qiskit-operator/pkg/apis"
+	"github.com/example-inc/new--/openshift-qiskit-operator/pkg/controller"
+	"github.com/example-inc/new--/openshift-qiskit-operator/version"
 	routev1 "github.com/openshift/api/route/v1"
 
 	"github.com/operator-framework/operator-sdk/pkg/k8sutil"

@@ -1,3 +1,10 @@
+# Artifacts Detail
+
+    .
+        ├── image                   # Files required for building Jupyter Notebook image
+        ├── operator                # Operator artifacts and documentation 
+        └── README.md
+
 # Usage
 
   
@@ -13,7 +20,7 @@ This installation method will use the latest version of the operator image that 
 1. Deploy the custom resource definition (CRD):
 
 ```
-oc apply -f deploy/crds/dobtech.io_qiskitplaygrounds_crd.yaml
+oc apply -f deploy/crds/singhp11.io_qiskitplaygrounds_crd
 
 ```
 
@@ -62,6 +69,6 @@ watch oc get pods
 
 6. Deploy an instance of the custom resource:
 ```
-oc apply -f deploy/crds/dobtech.io_v1_qiskitplayground_cr.yaml
+oc apply -f deploy/crds/singhp11.io_v1_qiskitplayground_cr.yaml
 ```
 7. The notebook is found on the exposed route

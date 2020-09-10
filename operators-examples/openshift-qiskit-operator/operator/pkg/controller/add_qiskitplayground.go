@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/husky-parul/openshift-qiskit-operator/pkg/controller/qiskitplayground"
+	"github.com/example-inc/new--/openshift-qiskit-operator/pkg/controller/qiskitplayground"
 )
 
 func init() {

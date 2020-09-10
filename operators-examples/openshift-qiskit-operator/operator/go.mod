@@ -1,4 +1,4 @@
-module github.com/husky-parul/openshift-qiskit-operator
+module github.com/example-inc/new--/openshift-qiskit-operator
 
 go 1.13
 
@@ -6,11 +6,10 @@ require (
 	github.com/openshift/api v3.9.1-0.20190924102528-32369d4db2ad+incompatible
 	github.com/operator-framework/operator-sdk v0.16.0
 	github.com/spf13/pflag v1.0.5
-	k8s.io/api v0.17.4
-	k8s.io/apimachinery v0.17.4
+	k8s.io/api v0.0.0
+	k8s.io/apimachinery v0.0.0
 	k8s.io/client-go v12.0.0+incompatible
-	sigs.k8s.io/controller-runtime v0.5.2
-	k8s.io/api v0.0.0-20190111032252-67edc246be36
+	sigs.k8s.io/controller-runtime v0.4.0
 )
 
 // Pinned to kubernetes-1.16.2

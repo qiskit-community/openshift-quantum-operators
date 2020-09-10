@@ -1,7 +1,7 @@
 package apis
 
 import (
-	v1 "github.com/husky-parul/openshift-qiskit-operator/pkg/apis/singhp11/v1"
+	v1 "github.com/example-inc/new--/openshift-qiskit-operator/pkg/apis/singhp11/v1"
 )
 
 func init() {

@@ -1,5 +1,5 @@
 
-# Operators for Qiskit
+# OpenShift Quanutm Operators
 
 ## Overwiew
 
@@ -7,18 +7,18 @@ These operators integrates your quantum workloads on OpenShift. It provides a de
 
 ## Getting started
 
-1. Qiskit developer's experience operator
+1. OpenShift Qiskit Operator
     
     Operator sets up a development environment with an integrated [Jupyter Notebook](https://hub.gke.mybinder.org/user/ipython-ipython-in-depth-azjvu4ak/notebooks/examples/Notebook/Notebook%20Basics.ipynb) and pre-installed dependencies for running quantum circuits on [IBMQ Account](https://quantum-computing.ibm.com/) using [Qiskit](https://qiskit.org/).
 
     Example notebook implementing [Grover's Search Algorithm](https://qiskit.org/textbook/ch-algorithms/grover.html)
 
-    For getting started guides, installation, deployment and test Qiskit developer's experience operator follow [here](https://github.com/husky-parul/glowing-quantum/tree/qiskit-dev-op/operators-examples/qiskit-dev-operator).
+    For getting started guides, installation, deployment and test Qiskit developer's experience operator follow [here](https://github.com/qiskit-community/openshift-quantum-operators/tree/master/operators-examples/openshift-qiskit-operator).
 
 ## Contributing
 
-Operators for Qiskit  is a community driven project and we welcome contributions. See Contributing to get started.
+OpenShift quanutm operators is a community driven project and we welcome contributions. See Contributing to get started.
 
 ## Report a Bug
 
-For filing bugs, suggesting improvements, or requesting new features, please open an  [issue](https://github.com/yard-turkey/glowing-quantum/issues)
+For filing bugs, suggesting improvements, or requesting new features, please open an  [issue](https://github.com/qiskit-community/openshift-quantum-operators/issues)
