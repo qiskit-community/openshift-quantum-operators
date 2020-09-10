@@ -1,0 +1,11 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: openshift-qiskit-operator
+subjects:
+  - kind: ServiceAccount
+    name: openshift-qiskit-operator
+roleRef:
+  kind: Role
+  name: openshift-qiskit-operator
+  apiGroup: rbac.authorization.k8s.io

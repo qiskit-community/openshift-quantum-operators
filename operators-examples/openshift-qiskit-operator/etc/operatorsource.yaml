@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorSource
+metadata:
+  name: openshift-qiskit-operator
+  namespace: openshift-marketplace
+spec:
+  type: appregistry
+  endpoint: https://quay.io/cnr
+  registryNamespace: husky_parul
+  displayName: "Qiskit Operator for OpenShift"
+  publisher: "IBM Quantum"
