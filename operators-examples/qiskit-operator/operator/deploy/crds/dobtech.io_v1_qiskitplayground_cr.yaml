@@ -1,4 +1,0 @@
-apiVersion: dobtech.io/v1
-kind: QiskitPlayground
-metadata:
-  name: example-playground
