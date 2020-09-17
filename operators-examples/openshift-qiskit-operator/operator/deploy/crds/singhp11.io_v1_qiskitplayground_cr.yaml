@@ -1,0 +1,7 @@
+apiVersion: singhp11.io/v1
+kind: QiskitPlayground
+metadata:
+  name: example-qiskitplayground
+spec:
+  # Add fields here
+  size: 3
