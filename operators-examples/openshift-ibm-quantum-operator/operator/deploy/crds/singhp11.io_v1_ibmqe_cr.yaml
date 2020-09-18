@@ -1,0 +1,7 @@
+apiVersion: singhp11.io/v1
+kind: Ibmqe
+metadata:
+  name: ibmqe
+spec:
+  # Add fields here
+  size: 3
