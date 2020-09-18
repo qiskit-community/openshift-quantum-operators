@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openshift-ibm-quantum-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: openshift-ibm-quantum-operator
+  template:
+    metadata:
+      labels:
+        name: openshift-ibm-quantum-operator
+    spec:
+      serviceAccountName: openshift-ibm-quantum-operator
+      containers:
+        - name: openshift-ibm-quantum-operator
+          # Replace this with the built image name
+          image: quay.io/husky_parul/openshift-ibm-quantum-operator:v0.1.0
+          command:
+            - openshift-ibm-quantum-operator
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "openshift-ibm-quantum-operator"
