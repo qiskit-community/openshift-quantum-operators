@@ -16,10 +16,10 @@ class Scheduler:
 
         logging.info('Scheduling job to IBM Q in progess')
 
-        # backend = least_busy(provider.backends(filters=lambda x: x.configuration().n_qubits >= qubits and
-        #                                        not x.configuration().simulator and x.status().operational == True))
+        backend = least_busy(self.provider.backends(filters=lambda x: x.configuration().n_qubits >= qubits and
+                                                    not x.configuration().simulator and x.status().operational == True))
 
-        backend = self.provider.backends.ibmq_qasm_simulator
+        # backend = self.provider.backends.ibmq_qasm_simulator
         logging.debug("Least busy backend: %s" % backend)
         logging.debug("In scheduler number of qubits requested: %s" % qubits)
         logging.debug("In scheduler: ", circuit)
