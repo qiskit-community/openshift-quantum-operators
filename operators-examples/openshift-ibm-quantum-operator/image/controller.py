@@ -16,23 +16,18 @@ class Controller:
 
     def __init__(self):
 
-        token = ''
-
-        # config = self.loadSecret()
-        # IBMQ.save_account(config.get('token'), overwrite=True)
-        IBMQ.save_account(token, overwrite=True)
+        config = self.loadSecret()
+        IBMQ.save_account(config.get('token'), overwrite=True)
+        # IBMQ.save_account(token, overwrite=True)
         provider = IBMQ.load_account()
         self.scheduler = Scheduler(provider)
 
-    def loadSecret():
+    def loadSecret(self):
         print('Loading secret')
         config = configparser.ConfigParser()
-
-        try:
-            f = open("/tmp/secrets/qiskitsecret/qiskit-secret.cfg", 'r')
-            config.readfp(f)
-        finally:
-            f.close()
+        f = open("/tmp/secrets/qiskitsecret/qiskit-secret.cfg", 'r')
+        config.readfp(f)
+        f.close()
 
         options = {
             'auth_version':         3,
@@ -53,6 +48,8 @@ class Controller:
         circuitWrapper.backend = q_job.backend()
 
         circuitWrapper = self.getStatus(q_job, circuitWrapper)
+        print("Job %s is submitted with status %s" % (circuitWrapper.jobId,
+                                                      circuitWrapper.status))
         logging.info("Job %s is submitted with status %s" % (circuitWrapper.jobId,
                                                              circuitWrapper.status))
         data = pickle.dumps(circuitWrapper)

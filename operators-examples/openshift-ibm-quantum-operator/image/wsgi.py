@@ -30,14 +30,6 @@ def api_getStatus():
     return response
 
 
-@application.route('/', methods=['GET'])
-def api_get():
-    logging.info("In sever request received: %s %s " %
-                 (request, request.content_length))
-
-    return "Hi"
-
-
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
     application.run()
