@@ -4,13 +4,13 @@ import (
 	"context"
 
 	singhp11v1 "github.com/example-inc/new--/openshift-qiskit-operator/pkg/apis/singhp11/v1"
-	corev1 "k8s.io/api/core/v1"
 	routev1 "github.com/openshift/api/route/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -22,6 +22,7 @@ import (
 )
 
 var log = logf.Log.WithName("controller_qiskitplayground")
+
 const port = 8888
 const image = "singhp11/centos-jupyter"
 
@@ -137,7 +138,6 @@ func (r *ReconcileQiskitPlayground) Reconcile(request reconcile.Request) (reconc
 		return reconcile.Result{}, err
 	}
 
-
 	// Check if service exists
 	foundService := &corev1.Service{}
 
@@ -177,8 +177,6 @@ func (r *ReconcileQiskitPlayground) Reconcile(request reconcile.Request) (reconc
 	// Route already exists - don't requeue
 	reqLogger.Info("Skip reconcile: Route already exists", "Route.Namespace", foundRoute.Namespace, "Route.Name", foundRoute.Name)
 
-
-
 	return reconcile.Result{}, nil
 }
 
@@ -196,10 +194,23 @@ func newPodForCR(cr *singhp11v1.QiskitPlayground) *corev1.Pod {
 		Spec: corev1.PodSpec{
 			Containers: []corev1.Container{
 				{
-					Name:    "openshift-qiskit-operator",
-					Image:   "quay.io/husky_parul/centos-qiskit-jupyter",
+					Name:  "openshift-qiskit-operator",
+					Image: "quay.io/husky_parul/centos-qiskit-jupyter",
+					VolumeMounts: []corev1.VolumeMount{{
+						Name:      "qiskit-secret",
+						MountPath: "/tmp/secrets/qiskitsecret",
+						ReadOnly:  true,
+					}},
 				},
 			},
+			Volumes: []corev1.Volume{{
+				Name: "qiskit-secret",
+				VolumeSource: corev1.VolumeSource{
+					Secret: &corev1.SecretVolumeSource{
+						SecretName: "qiskit-secret",
+					},
+				},
+			}},
 		},
 	}
 }
