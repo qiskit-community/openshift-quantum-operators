@@ -16,7 +16,7 @@ spec:
       containers:
         - name: openshift-ibm-quantum-operator
           # Replace this with the built image name
-          image: quay.io/husky_parul/openshift-ibm-quantum-operator:v0.1.0
+          image: quay.io/husky_parul/ibm-q:test
           command:
             - openshift-ibm-quantum-operator
           imagePullPolicy: Always
