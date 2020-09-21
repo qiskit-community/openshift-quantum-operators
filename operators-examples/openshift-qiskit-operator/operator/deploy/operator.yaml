@@ -16,7 +16,7 @@ spec:
       containers:
         - name: openshift-qiskit-operator
           # Replace this with the built image name
-          image: quay.io/husky_parul/openshift-qiskit-operator:v0.1.0
+          image: quay.io/husky_parul/qiskit-op:v0.1.0
           command:
             - openshift-qiskit-operator
           imagePullPolicy: Always
