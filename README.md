@@ -9,7 +9,7 @@ These operators integrates your quantum workloads on OpenShift. It provides a de
 
 1. OpenShift Qiskit Operator
 
-    Operator sets up a development environment with an integrated [Jupyter Notebook](https://hub.gke.mybinder.org/user/ipython-ipython-in-depth-azjvu4ak/notebooks/examples/Notebook/Notebook%20Basics.ipynb) and pre-installed dependencies for running quantum circuits on [IBMQ Account](https://quantum-computing.ibm.com/) using [Qiskit](https://qiskit.org/).
+    Operator sets up a development environment with an integrated [Jupyter Notebook](https://jupyter.org/) and pre-installed dependencies for running quantum circuits on [IBMQ Account](https://quantum-computing.ibm.com/) using [Qiskit](https://qiskit.org/).
 
     Example notebook implementing [Grover's Search Algorithm](https://qiskit.org/textbook/ch-algorithms/grover.html)
 
@@ -20,7 +20,7 @@ These operators integrates your quantum workloads on OpenShift. It provides a de
     OpenShift IBM quantum operator creates a flexible serving system for quantum circuits implemented in Qiskit.
     You can submit quantum workloads implemented in Qiskit which are executed on IBM Quantum Experience. Workloads are executed as pods, orchestrated and managed by Kube APIs.
 
-    For getting started guides, installation, deployment and test OpenShift IBM quantum operator follow [here](https://github.com/qiskit-community/openshift-quantum-operators/tree/master/operators-examples/ibm-quantum-operator).
+    For getting started guides, installation, deployment and test OpenShift IBM quantum operator follow [here](https://github.com/qiskit-community/openshift-quantum-operators/tree/master/operators-examples/openshift-ibm-quantum-operator).
 
 ## Contributing
 
