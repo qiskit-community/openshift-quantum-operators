@@ -1,5 +1,12 @@
 # Overview
 
+## Artifacts Detail
+
+    .
+        ├── image                   # Files required for building cr image
+        ├── operator                # Operator artifacts and documentation 
+        └── README.md
+
 ## Introduction
 
 OpenShift IBM quantum operator creates a flexible serving system for quantum circuits implemented in Qiskit.
