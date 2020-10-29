@@ -24,7 +24,7 @@ These operators integrates your quantum workloads on OpenShift. It provides a de
 
 ## Contributing
 
-OpenShift quanutm operators is a community driven project and we welcome contributions. Create [PR](https://github.com/qiskit-community/openshift-quantum-operators/pulls) to contribute.
+OpenShift quantum operators is a community driven project and we welcome contributions. Create [PR](https://github.com/qiskit-community/openshift-quantum-operators/pulls) to contribute.
 
 ## Report a Bug
 
