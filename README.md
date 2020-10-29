@@ -1,5 +1,5 @@
 
-# OpenShift Quanutm Operators
+# OpenShift Quantum Operators
 
 ## Overwiew
 
