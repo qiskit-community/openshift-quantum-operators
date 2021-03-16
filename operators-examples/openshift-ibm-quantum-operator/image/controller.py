@@ -1,91 +1,54 @@
-from qiskit import *
-from qiskit.visualization import plot_histogram
-from qiskit.tools.monitor import job_monitor
-from scheduler import Scheduler
-import requests
-import json
-from circuit_wrapper import CircuitWrapper
+
+from qiskit import BasicAer
+from qiskit import QuantumCircuit
+from qiskit import transpile, assemble
+from qiskit.qobj.qasm_qobj import QasmQobj as QasmQobj
+
 import pickle
-import logging
-import os
-import configparser
-from qiskit.providers.ibmq.exceptions import *
+import json
+import numpy
+
+from s3client.connect import S3client
 
 
 class Controller:
 
-    def __init__(self):
+    def status(self, qasm_dict={}):
+        print("Recieved: ", qasm_dict)
+        job_id = qasm_dict['qobj_id']
+        s3client = S3client()
+        bucket_name = "ibmqo"
+        obj = s3client.get(bucket_name, job_id)
+        return obj
 
-        config = self.loadSecret()
-        IBMQ.save_account(config.get('token'), overwrite=True)
-        # IBMQ.save_account(token, overwrite=True)
-        provider = IBMQ.load_account()
-        self.scheduler = Scheduler(provider)
+    def submit(self, qasm_dict={}):
+        print("Recieved qasm_dict: ", qasm_dict)
+        qasm_ojb = QasmQobj.from_dict(qasm_dict)
+        backend_sim = BasicAer.get_backend('qasm_simulator')
 
-    def loadSecret(self):
-        print('Loading secret')
-        config = configparser.ConfigParser()
-        f = open("/tmp/secrets/qiskitsecret/qiskit-secret.cfg", 'r')
-        config.readfp(f)
-        f.close()
+        result = backend_sim.run(qasm_ojb).result()
+        print("Result: ", result)
 
-        options = {
-            'auth_version':         3,
-            'token':          config['AUTH TOKENS']['token'],
-        }
-        return options
+        result_dict = result.to_dict()
+        print("result_dict: ", result_dict)
 
-    def handleJobRequest(self, j_req):
-        logging.info("handleJobRequest in Controller")
+        result_json = json.dumps(result_dict, cls=QobjEncoder)
+        print("result_json \n: ", result_json)
 
-        circuitWrapper = pickle.loads(j_req)
+        bucket_name = "ibmqo"
+        key = "cd5cc452-c2e0-42cb-8f37-fd381e3aa472"
+        obj = result_json
+        s3client = S3client()
+        s3client.put(bucket_name, key, obj)
+        return result_json
 
-        circuit = circuitWrapper.circuit
-        circuitName = circuitWrapper.circuitName
-        qubits = circuitWrapper.qubits
 
-        q_job = self.scheduler.schedule(circuit, qubits, circuitName)
-        circuitWrapper.backend = q_job.backend()
-
-        circuitWrapper = self.getStatus(q_job, circuitWrapper)
-        print("Job %s is submitted with status %s" % (circuitWrapper.jobId,
-                                                      circuitWrapper.status))
-        logging.info("Job %s is submitted with status %s" % (circuitWrapper.jobId,
-                                                             circuitWrapper.status))
-        data = pickle.dumps(circuitWrapper)
-        return data
-
-    def getStatus(self, job, circuitWrapper):
-        # Get the status from the IBM backend now and add an object store to fetch results
-        status = job.status()
-        circuitWrapper.jobId = job.job_id()
-
-        if job.done():
-            circuitWrapper.answer = job.result().get_counts(circuitWrapper.circuit)
-        else:
-            job.refresh()
-
-        circuitWrapper.status = job.status().value
-        return circuitWrapper
-
-    def handleStatusRequest(self, j_req):
-        logging.info("handleStatusRequest in Controller")
-
-        circuitWrapper = pickle.loads(j_req)
-        jobId = circuitWrapper.jobId
-
-        provider = IBMQ.get_provider()
-        logging.debug("Provider: %s" % provider)
-
-        backend = provider.get_backend(circuitWrapper.backend.name())
-        logging.debug("Backend: %s" % backend)
-
-        retrieved_job = backend.retrieve_job(jobId)
-        logging.debug('Job retrieved using jobId %s' % jobId)
-
-        circuitWrapper = self.getStatus(retrieved_job, circuitWrapper)
-        logging.info("Job %s is submitted with status %s" % (circuitWrapper.jobId,
-                                                             circuitWrapper.status))
-        data = pickle.dumps(circuitWrapper)
-
-        return data
+class QobjEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, numpy.int32):
+            return obj.item()
+        if isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        if isinstance(obj, complex):
+            return (obj.real, obj.imag)
+        return json.JSONEncoder.default(self, obj)

@@ -1,4 +1,4 @@
-FROM singhp11/basei-ibmqo:latest
+FROM centos/python-36-centos7:latest
 
 # User setup for OpenShift
 USER root
@@ -9,14 +9,12 @@ RUN mkdir -p ${HOME}/ibmq_operator && \
 
 WORKDIR ${HOME}
 
-ADD ./ ${HOME}/ibmq_operator
+ADD ./requirements.txt ${HOME}/ibmq_operator/
+
 RUN chown -R 9000:0 ${HOME} && \
     find ${HOME} -type d -exec chmod g+ws {} \;
 WORKDIR ${HOME}/ibmq_operator
 
-# Run the notebook
-USER 1001
-RUN ls -la
-
-EXPOSE 5000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install -r ${HOME}/ibmq_operator/requirements.txt
