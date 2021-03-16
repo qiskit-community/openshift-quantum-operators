@@ -1,0 +1,8 @@
+fastapi
+qiskit
+jupyter
+matplotlib
+numpy
+requests
+uvicorn
+boto3
