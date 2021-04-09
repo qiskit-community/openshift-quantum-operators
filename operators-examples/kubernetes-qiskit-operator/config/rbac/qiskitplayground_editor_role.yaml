@@ -1,0 +1,24 @@
+# permissions for end users to edit qiskitplaygrounds.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: qiskitplayground-editor-role
+rules:
+- apiGroups:
+  - qiskit.ibm.com
+  resources:
+  - qiskitplaygrounds
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - qiskit.ibm.com
+  resources:
+  - qiskitplaygrounds/status
+  verbs:
+  - get

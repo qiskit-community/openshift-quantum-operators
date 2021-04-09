@@ -1,0 +1,7 @@
+apiVersion: qiskit.ibm.com/v1alpha1
+kind: QiskitPlayground
+metadata:
+  name: qiskitplayground-sample
+spec:
+  # Add fields here
+  foo: bar

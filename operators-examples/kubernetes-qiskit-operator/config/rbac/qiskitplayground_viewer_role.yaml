@@ -1,0 +1,20 @@
+# permissions for end users to view qiskitplaygrounds.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: qiskitplayground-viewer-role
+rules:
+- apiGroups:
+  - qiskit.ibm.com
+  resources:
+  - qiskitplaygrounds
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - qiskit.ibm.com
+  resources:
+  - qiskitplaygrounds/status
+  verbs:
+  - get
