@@ -1,0 +1,23 @@
+jupyterlab_server~=1.0.0
+h5py==3.1.0
+numpy==1.20.1
+scipy==1.6.1
+torch==1.8.1
+decorator==4.4.2
+# NOTE: Cap pyscf below 1.7.4 until 1.7.6 is available which removes the
+# version cap on scipy and should have a fix for https://github.com/pyscf/pyscf/issues/814.
+pyscf<1.7.4
+qiskit[all]~=0.25.0
+qiskit-aqua[torch,cvx,pyscf]~=0.9.0
+qiskit-ibmq-provider[visualization]==0.12.2
+ibm_quantum_widgets
+kaleidoscope~=0.0.10
+# for memory extension
+nbresuse
+# torchvision is used by qiskit-textbook and is tightly
+# coupled to the version of torch that is installed (which
+# gets upgraded by qiskit-aqua[torch].
+torchvision
+json-logging
+ibm-quantum-widgets
+ipyvue

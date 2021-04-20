@@ -10,7 +10,7 @@ For installation, follow [Installation guide](https://sdk.operatorframework.io/d
 Create project
 
 ````
-operator-sdk init --domain ibm.com --repo github.io/blublinsky/qiskitplaygrounds
+operator-sdk init --domain ibm.com --repo github.io/blublinsky/qiskitplaygrounds --project-version=3
 ````
 Install additional libraries
 ````
@@ -18,6 +18,7 @@ go get github.com/go-logr/logr@v0.3.0
 go get github.com/onsi/ginkgo@v1.14.1
 go get github.com/onsi/gomega@v1.10.2
 go get k8s.io/api/core/v1@v0.19.2
+go get k8s.io/api/apps/v1@v0.19.2
 go get github.com/openshift/api/route/v1
 ````
 Create APIs
@@ -28,29 +29,16 @@ operator-sdk create api --group qiskit --version v1alpha1 --kind QiskitPlaygroun
 ## Overall approach
 
 Implementation is based on [Jupyter images](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html)
-A simple [Dockerfile](image/Dockerfile) looks like follows:
+A simple [Dockerfile](image/Dockerfile) is based on `jupyter/scipy-notebook`:
+
+Changing permission in this dockerfile is necessary to be able to use this image on OpenShift, [see](https://developers.redhat.com/blog/2020/10/26/adapting-docker-and-kubernetes-containers-to-run-on-red-hat-openshift-container-platform/), which runs the pod as a user defined by project.
+
+You can build image with the following command (assuming that you are in the project root directory)
 
 ````
-# Start from Jupyter image
-FROM jupyter/scipy-notebook:584e9ab39d22
-# Change permissions on data directory (for OpenShift).
-# See https://developers.redhat.com/blog/2020/10/26/adapting-docker-and-kubernetes-containers-to-run-on-red-hat-openshift-container-platform/
-USER root
-RUN chgrp -R 0 /home/jovyan && \
-    chmod -R 777 /home/jovyan
-# Install Qiskit
-USER $NB_UID
-RUN pip install qiskit[visualization]
+docker build -t qiskit/jupyter:0.1 image
 ````
-
-Here changing permission is necessary to be able to use this image on OpenShift, [see](https://developers.redhat.com/blog/2020/10/26/adapting-docker-and-kubernetes-containers-to-run-on-red-hat-openshift-container-platform/), which runs the pod as a user defined by project.
-There is a prebuild image `blublinsky1/qiskit:0.1`
-
-With this in place build image with the following command (assuming that you are in the project root directory)
-
-````
-docker build -t blublinsky1/qiskit:0.1 image
-````
+There is also a prebuild image `qiskit/jupyter:0.1`
 
 The CRD takes the following parameters:
 
@@ -59,7 +47,7 @@ The CRD takes the following parameters:
 	ImagePullPolicy apiv1.PullPolicy `json:"imagePullPolicy,omitempty"`
 	PVC string `json:"pvc,omitempty"`
 	LoadBalancer bool `json:"loadbalancer,omitempty" description:"Define if load balancer service type is supported. By default false"`
-  Resources *apiv1.ResourceRequirements `json:"resources,omitempty"`
+    Resources *apiv1.ResourceRequirements `json:"resources,omitempty"`
 
 ````
 The only required parameter is image, for example:
@@ -71,7 +59,7 @@ metadata:
   name: test
   namespace: jupyter
 spec:
-  image: "blublinsky1/qiskit:0.1"
+  image: "qiskit/jupyter:0.1"
 ````
 If not provided Image pull policy defaults to `IfNotPresent`. To change it add `imagePullPolicy: "Always"`
 
@@ -84,7 +72,7 @@ metadata:
   name: test
   namespace: jupyter
 spec:
-  image: "blublinsky1/qiskit:0.1"
+  image: "qiskit/jupyter:0.1"
   pvc: "claim-admin"
 ````
 If PVC is not defined, an internal Pod disk is used. Note that without PVC all the notebooks will dissapear after the pod is deleted.
@@ -107,7 +95,7 @@ metadata:
   name: test
   namespace: jupyter
 spec:
-  image: "blublinsky1/qiskit:0.1"
+  image: "qiskit/jupyter:0.1"
   loadbalancer: true
 
 ````
@@ -120,7 +108,7 @@ metadata:
   name: test
   namespace: jupyter
 spec:
-  image: "blublinsky1/qiskit:0.1"
+  image: "qiskit/jupyter:0.1"
   pvc: "claim-admin"
   resources:
     requests:
@@ -143,12 +131,12 @@ make install run
 To build operator's docker file run
 
 ````
-make docker-build docker-push IMG=blublinsky1/qiskitoperator:0.1
+make docker-build docker-push IMG=qiskit/operator:0.1
 ````
 
 With this image in place, you can install operator.
 ````
-make deploy IMG=blublinsky1/qiskitoperator:0.1
+make deploy IMG=qiskit/operator:0.1
 ````
 By default, a new namespace is created with name <project-name>-system - `qiskit-operator-system` in our case
 To get all resources created by this deployment run:
@@ -161,4 +149,26 @@ You will see that in addition to deployment and pod, a service for metrics will 
 ````
 qiskit-operator-controller-manager-metrics-service   ClusterIP   10.96.240.190   <none>        8443/TCP   6m41s
 ````
+
+To deploy an operator with OLM follow instructions [here](https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/#3-deploy-your-operator-with-olm)
+First install OLM using the following command:
+
+````
+operator-sdk olm install
+````
+To verify OLM installation you can execute:
+
+````
+operator-sdk olm status
+````
+All resources should be installed.
+
+Now you can run
+
+````
+make bundle
+````
+and answer additional questions
+
+
 

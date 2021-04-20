@@ -1,0 +1,47 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: qiskit-operator.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: QiskitPlayground is the Schema for the qiskitplaygrounds API
+      displayName: Qiskit Playground
+      kind: QiskitPlayground
+      name: qiskitplaygrounds.qiskit.ibm.com
+      version: v1alpha1
+  description: Simple QiskitPlaygroung for JupyterLab
+  displayName: QiskitPlayground
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - Qiskit
+  links:
+  - name: Qiskit Operator
+    url: https://qiskit-operator.domain
+  maintainers:
+  - email: blublinsky@ibm.com
+    name: boris
+  maturity: alpha
+  provider:
+    name: IBM Quantum
+  version: 0.0.0
