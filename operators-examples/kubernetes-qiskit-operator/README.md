@@ -40,6 +40,8 @@ docker build -t qiskit/jupyter:0.1 image
 ````
 There is also a prebuild image `qiskit/jupyter:0.1`
 
+## CRD
+
 The CRD takes the following parameters:
 
 ````
@@ -119,10 +121,14 @@ spec:
       cpu: "500m"
 ````
 
+## Implementation details
+
 To make implementation more reliable, operator is using a deployment with 1 replica,
 which means that if the pod is deleted, it will be brought back by deployment.
 
 When playground CR is deleted, it will delete all of the associated resources based on the owner reference.
+
+## Build and Run commands
 
 To run operator locally, use the following command:
 ````
@@ -150,7 +156,10 @@ You will see that in addition to deployment and pod, a service for metrics will 
 qiskit-operator-controller-manager-metrics-service   ClusterIP   10.96.240.190   <none>        8443/TCP   6m41s
 ````
 
-To deploy an operator with OLM follow instructions [here](https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/#3-deploy-your-operator-with-olm)
+## OLM support
+
+To deploy an operator with OLM follow instructions [here](https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/#3-deploy-your-operator-with-olm).
+More details are [here](https://sdk.operatorframework.io/docs/olm-integration/quickstart-bundle/)
 First install OLM using the following command:
 
 ````
@@ -168,7 +177,19 @@ Now you can run
 ````
 make bundle
 ````
-and answer additional questions
+Answer additional questions during build
 
+Once the Bundle is created it has to be build and pushed to the registry using the command:
 
+````
+make bundle-build bundle-push BUNDLE_IMG=qiskit/operator-olm:0.1
+````
+
+***Note:*** Bundle-push does not seem to exist in the Makefile, so I pushed the create docker file manually.
+
+Once the bundle is created we can test it using the following command
+
+````
+operator-sdk run bundle  docker.io/qiskit/operator-olm:0.1
+````
 
